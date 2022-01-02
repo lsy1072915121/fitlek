@@ -1,9 +1,10 @@
 #! /usr/bin/env python
-import json
+# -*- coding:utf-8 -*-
 import sys
+import os
 
+from extend import erg_parse
 from fitlek.garmin import GarminClient
-from fitlek.fartlek import create_fartlek_workout
 
 
 def parse_args(args):
@@ -30,32 +31,38 @@ def get_or_throw(d, key, error):
 if __name__ == "__main__":
     args = parse_args(sys.argv)
 
-    duration = get_or_throw(
-        args, "--duration", "The --duration value is required (format: MM:SS)"
+    file_path = get_or_throw(
+        args, "--file-path", "转换文件目录(支持erg)"
     )
-    target_pace = get_or_throw(
+    ftp = get_or_throw(
         args,
-        "--target-pace",
-        "The --target-pace value is required (format: MM:SS - mins/km)",
+        "--ftp",
+        "FTP",
+    )
+    username = get_or_throw(
+        args, "--username", "Garmin Connect 用户名"
+    )
+    password = get_or_throw(
+        args, "--password", "Garmin Connect 密码"
     )
 
-    if not "--dry-run" in args:
-        username = get_or_throw(
-            args, "--username", "The Garmin Connect --username value is required"
-        )
-        password = get_or_throw(
-            args, "--password", "The Garmin Connect --password value is required"
-        )
+    # 文件格式校验
+    path, tmp_file_name = os.path.split(file_path)
+    shot_name, extension = os.path.splitext(tmp_file_name)
+    if ".erg" != extension:
+        print("目前只支持erg文件")
+        raise Exception("only support erg file now！")
+    if ftp <= 0 or ftp >= 500:
+        print("请输入正确的ftp")
+        raise Exception("please input right FTP！")
 
-    workout = create_fartlek_workout(duration, target_pace)
+    name = "{}w-{}".format(str(ftp), shot_name)
+    workout = erg_parse.switch_to_cycling_workout(file_path, name, ftp)
 
-    if '--dry-run' in args:
-        print(json.dumps(workout.json(), indent=2))
-    else:
-        client = GarminClient(username, password)
-        client.connect()
-        client.add_workout(workout)
+    client = GarminClient(username, password)
+    client.connect()
+    client.add_workout(workout)
 
-        print(
-            "Added workout. Check https://connect.garmin.com/modern/workouts and get ready to run!"
-        )
+    print(
+        "添加课表成功, 点击 https://connectus.garmin.com/modern/workouts 或者在手机Garmin Connect App查看"
+    )

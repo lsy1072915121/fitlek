@@ -1,24 +1,48 @@
-`fitlek` adds a randomised Fartlek workout to Garmin Connect for you.
-
-It's called `FITlek` because the original intention was to create a `.fit` file that you could upload directly to your watch. That might still happen but going directly to Garmin is working for me right now..
 
 
-### Usage
+# 目的
 
-The easiest way to create a new workout for yourself if to clone the repo and run the script. There are no requirements other than a modern version of Python 3 (tested with 3.8).
+1.佳明码表不支持erg、mrc或者zwo格式的课程文件，只支持fit文件。所以很多课程文件不能直接应用到佳明码表上，略显鸡肋。
 
+2.佳明Connect的课程编辑不支持FTP的百分比设置,但是很多课程都是根据FTP的百分比来的，所以这些课程需要转换成具体功率数值，且需要在Connect上新建课程。
+
+所以，为了解决以上问题，本项目孕育而生。
+
+# 功能
+v1.0（2022.1.3）
+
+1. 支持将本地erg文件转换并导入到佳明Connect,且佳明码表可直接使用
+2. 支持erg课程文件由FTP百分比设置、具体功率设置
+3. 支持佳明账号（目前只支持海外账号）登录
+
+# 使用方式
+
+## 转化并导入
 ```
-> git clone https://github.com/sesh/fitlek.git
+> git clone https://github.com/lsy1072915121/fitlek.git
 > cd fitlek
-> python3 fitlek.py --duration=30:00 --target-pace=04:00 --username="your-garmin-connect-username" --password="your-garmin-connect-password"
+> python3 ./cli.py --file-path=./MyCathySpeical.erg --ftp=250 --username="your account name" --password="your password"
 ```
 
-Running the above should result in a new workout that looks something like this:
+## 佳明Connect
+
+erg课程文件
 
 ![workout](images/workout.png)
 
+Connect App
 
-### Acknowledgements
+![workout](images/ConnectApp.jpeg)
 
-- The login to Garmin Connect is heavily copied from [petergardfjall/garminexport](https://github.com/petergardfjall/garminexport). There's lots of great work in that project, definitely worth checking out if you're interested in working with Garmin Connect.
-- Some details about the Workouts format were taken from [mgifos/quick-plan](https://github.com/mgifos/quick-plan/). If I'm inspired to work on this project more I expect it to start looking more like `quick-plan`.
+佳明码表
+
+![]()（码表不在身边，后补）
+
+
+# 感谢
+
+- 登录模块和佳明课程格式是基于 [fitlek](https://github.com/sesh/fitlek.git) 开发(虽然一开始测试的时候，这个登录模块并不可用，后来顺手把登录方式优化更新了)。不管怎样，为了表示感谢，项目沿用之前的名字。
+
+# 最后
+
+- 欢迎广大骑友使用，并提供宝贵意见🚴🏻⛰
