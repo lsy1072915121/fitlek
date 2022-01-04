@@ -30,13 +30,14 @@ erg课程文件
 
 ![workout](http://media.liushiyao.top/picgo/20220103011118.png)
 
+佳明码表
+
+![workout](http://media.liushiyao.top/picgo/20220104192230.png)
+
 Connect App
 
 ![workout](http://media.liushiyao.top/picgo/ConnectApp.jpeg)
 
-佳明码表
-
-![]()（码表不在身边，后补）
 
 
 # 感谢
